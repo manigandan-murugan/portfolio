@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manigandan Murugan | Integration Developer</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons for crisp, modern icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Google Fonts: Rajdhani (HUD/Tech Display) & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        hud: ['Rajdhani', 'sans-serif'],
+                    },
+                    colors: {
+                        stark: {
+                            dark: '#030712',
+                            card: '#08192c',
+                            red: '#ff2200',
+                            gold: '#ffb703',
+                            cyan: '#00f0ff',
+                            glow: 'rgba(0, 240, 255, 0.15)'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+        html { 
+            background: #030712; 
+        }
+        body {
+            position: relative;
+            background-color: #020817;
+            background-image: 
+                radial-gradient(ellipse at 50% 40%, rgba(8,145,178,0.24), transparent 44%),
+                radial-gradient(ellipse at 8% 22%, rgba(37,99,235,0.20), transparent 34%),
+                radial-gradient(ellipse at 92% 70%, rgba(6,182,212,0.13), transparent 32%),
+                linear-gradient(180deg, #020817, #071426 50%, #020817);
+            background-attachment: fixed;
+            color: #F8FAFC;
+        }
+
+        /* Avengers Hologram Background Grid */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.6;
+            background-image:
+                linear-gradient(rgba(34,211,238,0.085) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34,211,238,0.085) 1px, transparent 1px),
+                repeating-linear-gradient(0deg, rgba(125,211,252,0.025) 0 1px, transparent 1px 4px);
+            background-size: 44px 44px, 44px 44px, 100% 4px;
+        }
+
+        /* Arc Reactor Center Radial Aura */
+        .hero-arc-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 700px;
+            height: 700px;
+            pointer-events: none;
+            z-index: 0;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.14) 0%, rgba(14, 165, 233, 0.05) 50%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        /* HUD Hologram Card Styling */
+        .hud-panel {
+            background-color: rgba(8, 25, 44, 0.75) !important;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(103, 232, 249, 0.25) !important;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.05);
+        }
+        .hud-panel:hover {
+            border-color: rgba(0, 240, 255, 0.6) !important;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.15);
+        }
+
+        /* Scan line animation for vertical portrait card */
+        @keyframes scan-vertical {
+            0% { top: -5%; opacity: 0; }
+            15% { opacity: 0.8; }
+            85% { opacity: 0.8; }
+            100% { top: 105%; opacity: 0; }
+        }
+
+        .hud-scanner-beam {
+            animation: scan-vertical 4.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Ensure smooth stacking over grid */
+        body > main, body > footer { position: relative; z-index: 1; }
+        body > header { z-index: 50; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #030712; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
+
+        /* HUD Title Font Overrides */
+        h1, h2, h3, .hud-text {
+            font-family: 'Rajdhani', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyan-500 selection:text-black">
+
+    <!-- Sticky Header -->
+    <header class="fixed w-full top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-cyan-500/20 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#about" class="text-2xl font-bold tracking-wider flex items-center gap-2 group hud-text text-slate-100">
+                <i class="ph-fill ph-cpu text-cyan-400 text-2xl group-hover:animate-pulse"></i>
+                <span>MANIGANDAN</span>
+            </a>
+            
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex gap-8 text-sm font-semibold tracking-wider uppercase hud-text text-slate-300">
+                <a href="#about" class="hover:text-cyan-400 transition-colors">About</a>
+                <a href="#engineering-impact" class="hover:text-cyan-400 transition-colors">Impact</a>
+                <a href="#projects" class="hover:text-cyan-400 transition-colors">Projects</a>
+                <a href="#workflow" class="hover:text-cyan-400 transition-colors">Workflow</a>
+                <a href="#skills" class="hover:text-cyan-400 transition-colors">Toolkit</a>
+                <a href="#contact" class="hover:text-cyan-400 transition-colors">Contact</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-cyan-400">
+                <i class="ph ph-list text-3xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Nav Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-950 border-b border-cyan-500/30">
+            <nav class="flex flex-col px-6 py-4 space-y-4 text-sm font-semibold tracking-wider uppercase hud-text text-slate-300">
+                <a href="#about" class="mobile-link hover:text-cyan-400 transition-colors">About</a>
+                <a href="#engineering-impact" class="mobile-link hover:text-cyan-400 transition-colors">Impact</a>
+                <a href="#projects" class="mobile-link hover:text-cyan-400 transition-colors">Projects</a>
+                <a href="#workflow" class="mobile-link hover:text-cyan-400 transition-colors">Workflow</a>
+                <a href="#skills" class="mobile-link hover:text-cyan-400 transition-colors">Toolkit</a>
+                <a href="#contact" class="mobile-link hover:text-cyan-400 transition-colors">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="about" class="relative min-h-[90vh] flex items-center justify-center pt-28 pb-16 overflow-hidden">
+            <!-- Background Radial Glow -->
+            <div class="hero-arc-glow"></div>
+
+            <div class="max-w-6xl mx-auto px-6 relative z-10 w-full flex flex-col md:flex-row items-center justify-between gap-12 text-center md:text-left">
+                
+                <!-- Hero Text -->
+                <div class="flex-1 flex flex-col items-center md:items-start order-2 md:order-1">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-cyan-400 text-xs font-mono mb-6 shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
+                        </span>
+                        SYSTEM ONLINE • READY FOR DEPLOYMENT
+                    </div>
+                    
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-wider mb-2 text-slate-100 leading-tight">
+                        MANIGANDAN <br class="hidden sm:inline" /><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500">MURUGAN</span>
+                    </h1>
+                    
+                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-amber-400 tracking-widest mb-6 uppercase">
+                        Integration Developer & Java Backend Engineer
+                    </h2>
+                    
+                    <p class="text-base text-slate-300 max-w-xl mb-10 leading-relaxed font-sans">
+                        Specializing in Spring Boot, Microservices, and Cybersecurity integrations. Building scalable, reliable, and secure solutions that process millions of records with minimal memory overhead.
+                    </p>
+                    
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                        <a href="#projects" class="px-8 py-3.5 rounded-lg bg-cyan-500 text-slate-950 font-bold hover:bg-cyan-400 transition-all duration-300 shadow-[0_0_25px_rgba(0,240,255,0.4)] tracking-wider">
+                            EXPLORE PROJECTS
+                        </a>
+                        <a href="#contact" class="px-8 py-3.5 rounded-lg bg-slate-900 text-slate-200 font-semibold hover:bg-slate-800 border border-slate-700 hover:border-cyan-500/50 transition-all duration-300 tracking-wider">
+                            GET IN TOUCH
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Vertical Cyber Portrait HUD Card Container -->
+                <div class="relative flex-shrink-0 order-1 md:order-2 flex justify-center items-center">
+                    
+                    <!-- Outer Orbiting Cyber Target Ring -->
+                    <div class="absolute w-[320px] h-[450px] sm:w-[380px] sm:h-[530px] border border-dashed border-cyan-500/20 rounded-3xl animate-[spin_100s_linear_infinite] pointer-events-none"></div>
+
+                    <!-- Main HUD Card Frame -->
+                    <div class="relative w-[270px] h-[400px] sm:w-[320px] sm:h-[470px] rounded-2xl p-2 bg-gradient-to-b from-slate-900/90 via-slate-950/95 to-slate-900/90 border-2 border-cyan-400/50 shadow-[0_0_35px_rgba(0,240,255,0.25)] flex items-center justify-center z-10 group overflow-hidden">
+                        
+                        <!-- Futuristic Corner Brackets -->
+                        <div class="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-cyan-400 z-20"></div>
+                        <div class="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-cyan-400 z-20"></div>
+                        <div class="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-cyan-400 z-20"></div>
+                        <div class="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-cyan-400 z-20"></div>
+
+                        <!-- Inner Image Box -->
+                        <div class="relative w-full h-full rounded-xl overflow-hidden bg-black/80 flex items-center justify-center">
+                            <img 
+                                src="Manigan_M.png" 
+                                alt="Manigandan Murugan" 
+                                class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                                onerror="this.onerror=null; this.src='https://placehold.co/320x470/08192c/00f0ff?text=Manigandan+M';"
+                            />
+
+                            <!-- Laser Scan Line Effect -->
+                            <div class="absolute inset-x-0 h-12 bg-gradient-to-b from-transparent via-cyan-400/30 to-cyan-400/80 border-b-2 border-cyan-300 hud-scanner-beam shadow-[0_4px_15px_rgba(0,240,255,0.7)] pointer-events-none z-20"></div>
+
+                            <!-- Subtle HUD Glass Overlay Gradient -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-cyan-950/20 pointer-events-none z-10"></div>
+
+                            <!-- Live HUD Status Badge inside Image -->
+                            <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between px-3 py-1.5 rounded-md bg-slate-950/80 border border-cyan-500/30 backdrop-blur-md z-20">
+                                <span class="text-[10px] font-mono text-cyan-400 tracking-wider flex items-center gap-1.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                                    BIO-SCAN VERIFIED
+                                </span>
+                                <span class="text-[10px] font-mono text-slate-400">DEV // 01</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Heavy Lifting Section -->
+        <section id="engineering-impact" class="py-24 relative border-t border-cyan-500/20">
+            <div class="max-w-6xl mx-auto px-6">
+                
+                <!-- Section Header -->
+                <div class="flex flex-col items-start pl-0 mb-12">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-100 tracking-wider">
+                        The <span class="text-cyan-400">Heavy Lifting</span>
+                    </h2>
+                    <p class="text-slate-400 mt-2 font-mono text-sm">
+                        Engineering solutions built for scale, resilience, and complex security data ingestion.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Highlight 1 -->
+                    <div class="hud-panel p-8 rounded-xl border border-cyan-500/30 bg-slate-950/80 transition-all duration-300 group">
+                        <div class="h-12 w-12 rounded-lg bg-slate-900 border border-cyan-500/40 flex items-center justify-center mb-6 text-cyan-400 group-hover:scale-110 transition-transform">
+                            <i class="ph-bold ph-rocket text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-slate-100">Zero-to-One Builds</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed font-sans">
+                            Architected and built critical connectors entirely from scratch in Java 8/11. Includes <strong class="text-cyan-300">Google Threat Intelligence</strong> (handling 34 distinct models), <strong class="text-cyan-300">Halo Security</strong>, and <strong class="text-cyan-300">Akto</strong> connectors, mapping complex vendor APIs directly to unified data models.
+                        </p>
+                    </div>
+
+                    <!-- Highlight 2 -->
+                    <div class="hud-panel p-8 rounded-xl border border-cyan-500/30 bg-slate-950/80 transition-all duration-300 group">
+                        <div class="h-12 w-12 rounded-lg bg-slate-900 border border-cyan-500/40 flex items-center justify-center mb-6 text-cyan-400 group-hover:scale-110 transition-transform">
+                            <i class="ph-bold ph-trend-up text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-slate-100">Scale & Optimization</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed font-sans">
+                            Engineered high-volume data ingestion. Optimized the Checkmarx integration to sync <strong class="text-cyan-300">~1M records</strong> reliably. Profiled and refactored the Rapid7 Nexpose connector, cutting heap memory usage drastically from <strong class="text-cyan-300">80MB down to 10-30MB</strong>.
+                        </p>
+                    </div>
+
+                    <!-- Highlight 3 -->
+                    <div class="hud-panel p-8 rounded-xl border border-cyan-500/30 bg-slate-950/80 transition-all duration-300 group">
+                        <div class="h-12 w-12 rounded-lg bg-slate-900 border border-cyan-500/40 flex items-center justify-center mb-6 text-cyan-400 group-hover:scale-110 transition-transform">
+                            <i class="ph-bold ph-shield-check text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-slate-100">Domain Expertise</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed font-sans">
+                            Deep understanding of vulnerability management and threat intelligence. Successfully mapped complex scoring metrics including <strong class="text-cyan-300">CVSS v2/v3/v4, EPSS, CISA KEV,</strong> and <strong class="text-cyan-300">CWE</strong> across the Unified Data Model (UDM) for accurate risk prioritization.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-24 relative border-t border-cyan-500/20">
+            <div class="max-w-6xl mx-auto px-6">
+                
+                <!-- Section Header -->
+                <div class="flex flex-col items-start pl-0 mb-12">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-100 tracking-wider">
+                        Featured <span class="text-cyan-400">Projects & Builds</span>
+                    </h2>
+                    <p class="text-slate-400 mt-2 font-mono text-sm">
+                        Custom cybersecurity connectors built from scratch & high-scale production performance tuning.
+                    </p>
+                </div>
+
+                <!-- Projects Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                    <!-- Project 1: Google Threat Intelligence (GTI) -->
+                    <div class="hud-panel p-6 rounded-xl border border-cyan-500/30 bg-slate-950/80 transition-all duration-300 relative group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <span class="text-xs font-mono px-2 py-1 bg-cyan-950 text-cyan-400 border border-cyan-500/40 rounded">34 Models • Java 11</span>
+                                <h3 class="text-2xl font-bold text-slate-100 mt-2">Google Threat Intelligence (GTI)</h3>
+                            </div>
+                        </div>
+                        <p class="text-slate-300 text-sm mb-4 leading-relaxed font-sans">
+                            Engineered an enterprise threat intelligence and ASM integration from scratch. Built 34 models (including 27 External Attack Surface Management asset types) with VirusTotal v3 API surfaces, supporting full & incremental sync via sync tokens.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="text-xs font-mono text-amber-400 uppercase tracking-wider mb-2">Key Engineering Highlights:</h4>
+                            <ul class="text-xs text-slate-400 space-y-1 list-disc pl-4 font-sans">
+                                <li>Enriched data with CVSS v2/v3/v4, EPSS, CISA KEV, and CWE metrics.</li>
+                                <li>Diagnosed & resolved Jackson/SLF4J transitive dependency classpath conflicts taking down all 34 models.</li>
+                            </ul>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-800">
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2.5 py-1 rounded border border-slate-800">Java 11</span>
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2.5 py-1 rounded border border-slate-800">ASM / EASM</span>
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2.5 py-1 rounded border border-slate-800">Delta Sync</span>
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2.5 py-1 rounded border border-slate-800">Jackson</span>
+                        </div>
+                    </div>
+
+                    <!-- Project 2: Akto API Security Connector -->
+                    <div class="hud-panel p-6 rounded-xl border border-cyan-500/30 bg-slate-950/80 transition-all duration-300 relative group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <span class="text-xs font-mono px-2 py-1 bg-cyan-950 text-cyan-400 border border-cyan-500/40 rounded">Dual-Framework • Java 8 & 11</span>
+                                <h3 class="text-2xl font-bold text-slate-100 mt-2">Akto API Security Connector</h3>
+                            </div>
+                        </div>
+                        <p class="text-slate-300 text-sm mb-4 leading-relaxed font-sans">
+                            Built API security integrations for API collections, endpoints, DAST findings, and test definitions. Architected to compile cleanly across two framework generations (Java 8 for 10x platforms, Java 11 for 11x/12x).
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="text-xs font-mono text-amber-400 uppercase tracking-wider mb-2">Key Engineering Highlights:</h4>
+                            <ul class="text-xs text-slate-400 space-y-1 list-disc pl-4 font-sans">
+                                <li>Parallelized endpoint ingestion using <code class="text-cyan-300 bg-slate-900 px-1 font-mono">ForkJoinPool</code> worker threads.</li>
+                                <li>Implemented local disk-backed storage (<code class="text-cyan-300 bg-slate-900 px-1 font-mono">SimpleKVStore</code>) to cache and reuse collection feeds across models.</li>
+                            </ul>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-800">
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2.5 py-1 rounded border border-slate-800">Java 8/11</span>
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2.5 py-1 rounded border border-slate-800">ForkJoinPool</span>
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2.5 py-1 rounded border border-slate-800">DAST</span>
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2.5 py-1 rounded border border-slate-800">LocalStore</span>
+                        </div>
+                    </div>
+
+                    <!-- Project 3: Halo Security Connector -->
+                    <div class="hud-panel p-6 rounded-xl border border-cyan-500/30 bg-slate-950/80 transition-all duration-300 relative group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <span class="text-xs font-mono px-2 py-1 bg-cyan-950 text-cyan-400 border border-cyan-500/40 rounded">Rate-Limited • Offset Paging</span>
+                                <h3 class="text-2xl font-bold text-slate-100 mt-2">Halo Security Integration</h3>
+                            </div>
+                        </div>
+                        <p class="text-slate-300 text-sm mb-4 leading-relaxed font-sans">
+                            Designed and built a 4-model EASM integration covering Hosts, Scans, Issues, and Issue Definitions, merging instance records directly into unified vulnerability models.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="text-xs font-mono text-amber-400 uppercase tracking-wider mb-2">Key Engineering Highlights:</h4>
+                            <ul class="text-xs text-slate-400 space-y-1 list-disc pl-4 font-sans">
+                                <li>Integrated Guava <code class="text-cyan-300 bg-slate-900 px-1 font-mono">RateLimiter</code> to eliminate HTTP 429 rate-limit failures on issue detail calls.</li>
+                                <li>Implemented configurable offset pagination with exponential backoff retries.</li>
+                            </ul>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-800">
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2.5 py-1 rounded border border-slate-800">Java 11</span>
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2.5 py-1 rounded border border-slate-800">Guava RateLimiter</span>
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2.5 py-1 rounded border border-slate-800">REST API</span>
+                        </div>
+                    </div>
+
+                    <!-- Project 4: Production Scale & Memory Optimizations -->
+                    <div class="hud-panel p-6 rounded-xl border border-red-500/30 bg-slate-950/80 transition-all duration-300 relative group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <span class="text-xs font-mono px-2 py-1 bg-red-950 text-red-400 border border-red-500/40 rounded">Performance Engineering</span>
+                                <h3 class="text-2xl font-bold text-slate-100 mt-2">High-Volume Scale & Heap Tuning</h3>
+                            </div>
+                        </div>
+                        <p class="text-slate-300 text-sm mb-4 leading-relaxed font-sans">
+                            Targeted performance refactoring across high-volume production connectors to eliminate heap exhaustion, reduce runtime, and repair software inventory identity logic.
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="text-xs font-mono text-amber-400 uppercase tracking-wider mb-2">Key Achievements:</h4>
+                            <ul class="text-xs text-slate-400 space-y-1 list-disc pl-4 font-sans">
+                                <li><strong class="text-slate-200">Rapid7 Nexpose:</strong> Reduced heap usage from ~80MB down to 10–30MB by replacing disk-backed storage with flat in-memory maps.</li>
+                                <li><strong class="text-slate-200">Checkmarx One:</strong> Optimized ingestion at ~1M records/sync, reducing processing duration from 5-8 hours.</li>
+                                <li><strong class="text-slate-200">Qualys Package Normalization:</strong> Rewrote CPE key generation to eliminate duplicate record collapses caused by degenerate <code class="text-cyan-300 bg-slate-900 px-1 font-mono">cpe:/a</code> wildcards.</li>
+                            </ul>
+                        </div>
+                        <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-800">
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2.5 py-1 rounded border border-slate-800">Heap Optimization</span>
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2.5 py-1 rounded border border-slate-800">Checkmarx</span>
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2.5 py-1 rounded border border-slate-800">Rapid7</span>
+                            <span class="text-xs font-mono bg-slate-900 text-slate-300 px-2.5 py-1 rounded border border-slate-800">Qualys</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Workflow Section -->
+        <section id="workflow" class="py-24 relative border-t border-cyan-500/20">
+            <div class="max-w-6xl mx-auto px-6">
+                
+                <!-- Section Header -->
+                <div class="flex flex-col items-start pl-0 mb-12">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-100 tracking-wider">
+                        Engineering <span class="text-cyan-400">Workflow</span>
+                    </h2>
+                    <p class="text-slate-400 mt-2 font-mono text-sm">
+                        End-to-End Connector Lifecycle: From 3rd-party API analysis to automated customer-facing CHANGELOG generation.
+                    </p>
+                </div>
+
+                <div class="max-w-4xl mx-auto">
+                    <!-- Vertical Timeline Container -->
+                    <div class="relative border-l-2 border-cyan-500/30 ml-4 md:ml-6 space-y-12 pb-8">
+                        
+                        <!-- Phase 1 -->
+                        <div class="relative pl-8 md:pl-12">
+                            <div class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-slate-950 border-2 border-cyan-400 shadow-[0_0_10px_rgba(0,240,255,0.6)]"></div>
+                            <h3 class="text-xl font-bold text-slate-100">1. Intake, Analysis & Design</h3>
+                            <p class="text-xs text-amber-400 font-mono mb-3">Pre-Code Architecture</p>
+                            <div class="hud-panel p-5 rounded-lg border border-cyan-500/30 bg-slate-950/80">
+                                <p class="text-slate-300 leading-relaxed text-sm font-sans">
+                                    <span class="text-cyan-300 font-semibold">Architectural Design:</span> Proved API feasibility and rate limits using Postman before writing any code. Mapped vendor objects to the Unified Data Model (UDM), designed Jackson/Immutable DTOs, and authored the Docs-standard README to settle model boundaries early.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Phase 2 -->
+                        <div class="relative pl-8 md:pl-12">
+                            <div class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-slate-950 border-2 border-cyan-400 shadow-[0_0_10px_rgba(0,240,255,0.6)]"></div>
+                            <h3 class="text-xl font-bold text-slate-100">2. Core Implementation</h3>
+                            <p class="text-xs text-amber-400 font-mono mb-3">Java 8/11 Engineering</p>
+                            <div class="hud-panel p-5 rounded-lg border border-cyan-500/30 bg-slate-950/80">
+                                <p class="text-slate-300 leading-relaxed text-sm font-sans">
+                                    <span class="text-cyan-300 font-semibold">Code Engineering:</span> Engineered the connector logic, implementing complex pagination (cursor/offset/POST), rate limiting, and retry backoffs. Authored the customer-facing CHANGELOG, determining exact migration impacts (e.g., purge-and-resync notes).
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Phase 3 -->
+                        <div class="relative pl-8 md:pl-12">
+                            <div class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-slate-950 border-2 border-cyan-400 shadow-[0_0_10px_rgba(0,240,255,0.6)]"></div>
+                            <h3 class="text-xl font-bold text-slate-100">3. Testing & QA Specs</h3>
+                            <p class="text-xs text-amber-400 font-mono mb-3">Offline & Live Validation</p>
+                            <div class="hud-panel p-5 rounded-lg border border-cyan-500/30 bg-slate-950/80">
+                                <p class="text-slate-300 leading-relaxed text-sm font-sans">
+                                    <span class="text-cyan-300 font-semibold">Quality Assurance:</span> Built offline integration tests using <code class="text-cyan-300 bg-slate-900 px-1 rounded font-mono">MockWebServer</code> with mocked JSON/XML fixtures. Executed local live-API syncs and authored the strict, 7-part QA Validation Spec to define exact expected record counts and delta-sync behavior for QA engineers.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Phase 4 -->
+                        <div class="relative pl-8 md:pl-12">
+                            <div class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-slate-950 border-2 border-cyan-400 shadow-[0_0_10px_rgba(0,240,255,0.6)]"></div>
+                            <h3 class="text-xl font-bold text-slate-100">4. CI/CD & Instance Verification</h3>
+                            <p class="text-xs text-amber-400 font-mono mb-3">Pre-PR Checks & Deployment</p>
+                            <div class="hud-panel p-5 rounded-lg border border-cyan-500/30 bg-slate-950/80">
+                                <p class="text-slate-300 leading-relaxed text-sm font-sans">
+                                    <span class="text-cyan-300 font-semibold">Pipeline Execution:</span> Ran OWASP Dependency-Checks and Spotless formatting via the custom Antigravity skill pack. Triggered Jenkins snapshot builds and deployed them to 11X instances to verify real-data ingestion, list views, and operation options before raising PRs.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Phase 5 -->
+                        <div class="relative pl-8 md:pl-12">
+                            <div class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-slate-950 border-2 border-cyan-400 shadow-[0_0_10px_rgba(0,240,255,0.6)]"></div>
+                            <h3 class="text-xl font-bold text-slate-100">5. Review, Validation & Release</h3>
+                            <p class="text-xs text-amber-400 font-mono mb-3">Customer Sign-off & Publication</p>
+                            <div class="hud-panel p-5 rounded-lg border border-cyan-500/30 bg-slate-950/80">
+                                <p class="text-slate-300 leading-relaxed text-sm font-sans">
+                                    <span class="text-cyan-300 font-semibold">Release Ownership:</span> Managed peer code reviews and drove customer validation by deploying snapshots directly to their instances. Handled the Jenkins Maven release sequence (tag/version bump) and verified the automated publication of the connector pages to the official api documentation.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Toolkit Section -->
+        <section id="skills" class="py-24 relative border-t border-cyan-500/20">
+            <div class="max-w-6xl mx-auto px-6">
+                
+                <!-- Section Header -->
+                <div class="flex flex-col items-start pl-0 mb-12">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-slate-100 tracking-wider">
+                        Technical <span class="text-cyan-400">Toolkit</span>
+                    </h2>
+                    <p class="text-slate-400 mt-2 font-mono text-sm">
+                        A quick reference grid of the technologies, frameworks, and patterns used across my work.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Core -->
+                    <div class="hud-panel p-6 rounded-xl border border-cyan-500/30 bg-slate-950/80">
+                        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
+                            <i class="ph-bold ph-code text-2xl text-cyan-400"></i>
+                            <h3 class="text-lg font-bold text-slate-100">Core Backend</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">Java (8 & 17)</span>
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">Spring Boot</span>
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">Microservices</span>
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">RESTful APIs</span>
+                        </div>
+                    </div>
+
+                    <!-- Integration -->
+                    <div class="hud-panel p-6 rounded-xl border border-cyan-500/30 bg-slate-950/80">
+                        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
+                            <i class="ph-bold ph-plugs-connected text-2xl text-cyan-400"></i>
+                            <h3 class="text-lg font-bold text-slate-100">Integration</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">OAuth2</span>
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">Session Auth</span>
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">Pagination</span>
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">Guava RateLimiter</span>
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">Jackson JSON</span>
+                        </div>
+                    </div>
+
+                    <!-- Data & DevOps -->
+                    <div class="hud-panel p-6 rounded-xl border border-cyan-500/30 bg-slate-950/80">
+                        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
+                            <i class="ph-bold ph-database text-2xl text-cyan-400"></i>
+                            <h3 class="text-lg font-bold text-slate-100">Data & DevOps</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">PostgreSQL</span>
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">Git</span>
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">Bitbucket</span>
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">Jenkins</span>
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">Docker</span>
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">Kubernetes</span>
+                        </div>
+                    </div>
+
+                    <!-- Testing -->
+                    <div class="hud-panel p-6 rounded-xl border border-cyan-500/30 bg-slate-950/80">
+                        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
+                            <i class="ph-bold ph-bug-beetle text-2xl text-cyan-400"></i>
+                            <h3 class="text-lg font-bold text-slate-100">Testing</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">JUnit</span>
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">MockWebServer</span>
+                            <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded text-xs font-mono text-slate-300">Postman</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 relative border-t border-cyan-500/20">
+            <div class="max-w-3xl mx-auto px-6 text-center">
+                <i class="ph-bold ph-paper-plane-tilt text-5xl text-cyan-400 mb-6 inline-block animate-bounce"></i>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-slate-100 tracking-wider mb-6">INITIATE CONNECTION</h2>
+                <p class="text-slate-300 text-base md:text-lg mb-10 font-sans">
+                    Currently open to discussing new opportunities in backend development, systems integration, and cybersecurity engineering.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+                    <a href="mailto:manindia1007@gmail.com" class="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-cyan-500 text-slate-950 font-bold text-lg hover:bg-cyan-400 transition-all duration-300 shadow-[0_0_25px_rgba(0,240,255,0.3)] tracking-wider">
+                        <i class="ph-bold ph-envelope-simple"></i>
+                        manindia1007@gmail.com
+                    </a>
+                    
+                    <a href="https://wa.me/919080503428" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-8 py-4 rounded-lg bg-slate-900 text-slate-100 font-bold text-lg border border-slate-700 hover:border-cyan-500/50 hover:bg-slate-800 transition-all duration-300 tracking-wider">
+                        <i class="ph-bold ph-phone"></i>
+                        <i class="ph-bold ph-whatsapp-logo"></i>
+                        +91 9080503428
+                    </a>
+                </div>
+
+                <div class="flex items-center justify-center gap-6">
+                    <a href="https://www.linkedin.com/in/manigandan-murugan" target="_blank" rel="noopener noreferrer" class="h-12 w-12 rounded-lg bg-slate-900 border border-cyan-500/30 flex items-center justify-center text-slate-300 hover:text-cyan-400 hover:border-cyan-400 transition-all duration-300 group">
+                        <i class="ph-fill ph-linkedin-logo text-2xl group-hover:scale-110 transition-transform"></i>
+                    </a>
+                    <a href="https://github.com/manigandan-murugan" target="_blank" rel="noopener noreferrer" class="h-12 w-12 rounded-lg bg-slate-900 border border-cyan-500/30 flex items-center justify-center text-slate-300 hover:text-cyan-400 hover:border-cyan-400 transition-all duration-300 group">
+                        <i class="ph-fill ph-github-logo text-2xl group-hover:scale-110 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-slate-950 border-t border-cyan-500/20 text-center">
+        <p class="text-slate-500 text-xs font-mono">
+            &copy; <span id="current-year"></span> MANIGANDAN MURUGAN. STARK-TECH HUD ENGINE v3.0.
+        </p>
+    </footer>
+
+    <!-- JavaScript for Interactions -->
+    <script>
+        // Set dynamic year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Intersection Observer for Active Nav State
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('header nav a');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -70% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('text-cyan-400');
+                        link.classList.add('text-slate-300');
+                    });
+
+                    const activeId = entry.target.getAttribute('id');
+                    const activeLink = document.querySelector(`header nav a[href="#${activeId}"]`);
+                    
+                    if (activeLink) {
+                        activeLink.classList.remove('text-slate-300');
+                        activeLink.classList.add('text-cyan-400');
+                    }
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
